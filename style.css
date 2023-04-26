@@ -92,10 +92,14 @@
 .todo_input {
   flex-grow: 1;
   font-size: 1.3rem;
+  text-transform: capitalize;
+  color: #000;
+  font-size: 1.5rem;
+  font-weight: 600;
 }
 
-.todo_input {
-  text-transform: capitalize;
+.todo_input:disabled {
+  background-color: #fff;
 }
 
 .active {
@@ -137,6 +141,14 @@
   cursor: pointer;
   transition: all 0.2s ease-in-out;
   font-size: 1.2rem;
+}
+
+.edit {
+  display: block;
+}
+
+.save, .cancel {
+  display: none;
 }
 
 .edit:hover,
