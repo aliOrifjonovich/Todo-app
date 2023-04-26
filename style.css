@@ -95,7 +95,7 @@
   text-transform: capitalize;
   color: #000;
   font-size: 1.5rem;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .todo_input:disabled {
@@ -161,6 +161,55 @@
 .cancel:hover {
   color: red;
   transition: all 0.2s ease-in-out;
+}
+
+.validation {
+  width: 100%;
+  height: 100vh;
+  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7));
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100;
+}
+.validation_items {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 1rem;
+  width: 300px;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: #fff;
+  border-radius: 5px;
+}
+
+.center h2 {
+  font-size: 1.7rem;
+  font-weight: 500;
+  padding: 1.7rem 0;
+  color: #043763;
+}
+.center_noButton {
+  background: #ae2f3c;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  margin: 0 1rem;
+  font-size: 1.2rem;
+  border-radius: 5px;
+}
+.center_yesButton {
+  background: #043763;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  font-size: 1.2rem;
+  border-radius: 5px;
 }
 
 .filter {
