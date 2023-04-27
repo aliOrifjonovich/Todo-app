@@ -67,16 +67,16 @@ function onCheck(id) {
    todos = todos.map((v) => (v.id == id ? { ...v, isDone: !v.isDone } : v));
 		render();
 		const inputEl = document.querySelector(`#${id} .todo_input`);
-    const getButton = (id, className) =>
-			document.querySelector(`#${id} .${className}`);
-    const editButton = getButton(id, "edit");
+    // const getButton = (id, className) =>
+		// 	document.querySelector(`#${id} .${className}`);
+    // const editButton = getButton(id, "edit");
 
 		if (todos.find((v) => v.id == id).isDone) {
 			inputEl.classList.add("done");
-      console.log(inputEl);
-      editButton.style.display = "none";
+      // editButton.style.display = "none";
 		} else {
 			inputEl.classList.remove("done");
+      // editButton.style.display = "block"
 		}
 };
 

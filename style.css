@@ -109,6 +109,8 @@
 
 .done {
   text-decoration: line-through;
+  text-decoration-thickness: 3px;
+  text-decoration-color: #ae2f3c;
 }
 
 .clear {
