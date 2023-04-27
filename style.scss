@@ -98,7 +98,7 @@
     border: 2px solid red;
     transition: .05s all ease;
 }
-.line {
+.done {
     text-decoration: line-through;
 }
 .clear {
@@ -222,4 +222,12 @@
         border: none;
         
     }
+}
+
+.dragging {
+  opacity: 0.5;
+}
+
+.drag-over {
+  border: 2px dashed #1abc9c;
 }

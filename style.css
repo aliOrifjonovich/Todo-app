@@ -107,7 +107,7 @@
   transition: 0.05s all ease;
 }
 
-.line {
+.done {
   text-decoration: line-through;
 }
 
@@ -230,4 +230,12 @@
 .filter_selection {
   width: 60%;
   border: none;
+}
+
+.dragging {
+  opacity: 0.5;
+}
+
+.drag-over {
+  border: 2px dashed #1abc9c;
 }/*# sourceMappingURL=style.css.map */

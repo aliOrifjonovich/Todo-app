@@ -7,11 +7,12 @@ const updateBtn = document.querySelector(".edit");
 const cancelBtn = document.querySelector(".cancel");
 const todoInputBtn = document.querySelector(".todo_input");
 const select = document.querySelector(".filter_selection");
+const checkboxes = document.querySelectorAll(".checkbox")
 
 let todos = [
 	{ value: "read more", id: "a124423", isDone: false, edit: false },
-	{ value: "not read more", id: "a1232435", isDone: true, edit: false },
-	{ value: "Play Football", id: "a1235465", isDone: true, edit: false },
+	{ value: "not read more", id: "a1232435", isDone: false, edit: false },
+	{ value: "Play Football", id: "a1235465", isDone: false, edit: false },
 ];
 
 let status = "all";
@@ -34,13 +35,13 @@ const render = () => {
 		const checkbox = e.isDone;
 		const edit = e.edit
 		list.innerHTML += `
-        <li class="todo" id = "${e.id}">
+        <li class="todo" draggable="true" id = "${e.id}">
             <input type="checkbox" class="checkbox" <input onclick="onCheck('${
 							e.id
 						}');" ${checkbox == true ? "checked" : ""} type="checkbox""/>
             <input value="${e.value}" class="todo_input" type="text" ${
 			edit == false ? "disabled" : ""
-		}/>
+		} />
 			<div class="save">
                 <i onclick = "onSave('${e.id}')" class="fa-solid fa-floppy-disk"></i>
             </div>
@@ -63,9 +64,20 @@ render();
 
 // Checking input
 function onCheck(id) {
-  todos = todos.map((v) => (v.id == id ? {...v, isDone: !v.isDone} : v));
-  console.log(todos);
-  render();
+   todos = todos.map((v) => (v.id == id ? { ...v, isDone: !v.isDone } : v));
+		render();
+		const inputEl = document.querySelector(`#${id} .todo_input`);
+    const getButton = (id, className) =>
+			document.querySelector(`#${id} .${className}`);
+    const editButton = getButton(id, "edit");
+
+		if (todos.find((v) => v.id == id).isDone) {
+			inputEl.classList.add("done");
+      console.log(inputEl);
+      editButton.style.display = "none";
+		} else {
+			inputEl.classList.remove("done");
+		}
 };
 
 // Submit Button
@@ -153,10 +165,9 @@ const deleteById = (index) => {
 // // SELECTION
 select.addEventListener("change", (event) => {
 	console.log(event.target.value);
-	status = event.target.value;
+	status = event.target.value;  
 	render();
 });
-
 
 /*
 const form = document.querySelector(".form");
