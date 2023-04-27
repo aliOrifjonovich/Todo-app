@@ -9,13 +9,14 @@ const todoInputBtn = document.querySelector(".todo_input");
 const select = document.querySelector(".filter_selection");
 const checkboxes = document.querySelectorAll(".checkbox")
 
-let todos = [
-	{ value: "read more", id: "a124423", isDone: false, edit: false },
-	{ value: "not read more", id: "a1232435", isDone: false, edit: false },
-	{ value: "Play Football", id: "a1235465", isDone: false, edit: false },
-];
+let todos = JSON.parse(localStorage.getItem("todos")) || [];
 
 let status = "all";
+// let saveButton, editButton, updateBtn;
+
+// let showButtons = (show)=>{
+
+// }
 
 // Selection Filter
 const selectionFilter = (todos, status) => {
@@ -30,12 +31,13 @@ const selectionFilter = (todos, status) => {
 };
 
 const render = () => {
+  localStorage.setItem("todos", JSON.stringify(todos));
 	list.innerHTML = "";
 	selectionFilter(todos, status).forEach((e, index) => {
 		const checkbox = e.isDone;
 		const edit = e.edit
 		list.innerHTML += `
-        <li class="todo" draggable="true" id = "${e.id}">
+        <li class="todo" draggable= true id = "${e.id}">
             <input type="checkbox" class="checkbox" <input onclick="onCheck('${
 							e.id
 						}');" ${checkbox == true ? "checked" : ""} type="checkbox""/>
@@ -104,8 +106,8 @@ form.addEventListener("submit", (event) => {
 // Edit funtion
 const onEdit = (id) => {
 
-  const getButton = (id, className) => 
-    document.querySelector(`#${id} .${className}`);
+  const getButton = (id, className) =>
+		document.querySelector(`#${id} .${className}`);
 
   const saveButton = getButton(id, "save");
   const cancelButton = getButton(id, "cancel");
@@ -118,6 +120,14 @@ const onEdit = (id) => {
   const todoItem = document.querySelector(`#${id}`);
   const todoInput = todoItem.querySelector(".todo_input");
   todoInput.removeAttribute("disabled");
+  
+  todoInput.focus();
+  const inputElem = todoInput.value;
+  todoInput.value=""
+  todoInput.value = inputElem;
+
+
+
 };
 // Cancel Function
 const onCancel = (id) => {
@@ -143,7 +153,7 @@ const onCancel = (id) => {
 const onSave = (id) => {
   const inputEl = document.querySelector(`#${id} .todo_input`);
   const index = todos.findIndex((todo) => todo.id === id);
-  if (index !== -1) {
+  if (index !== true) {
     todos[index].value = inputEl.value;
     todos[index].edit = false;
     render();
@@ -169,162 +179,18 @@ select.addEventListener("change", (event) => {
 	render();
 });
 
-/*
-const form = document.querySelector(".form");
-const list = document.querySelector(".todosList");
-const clear = document.querySelector(".clear");
-const input = document.querySelector(".input");
-const select = document.querySelector(".select");
+const listElems = document.getElementsByClassName("todo");
 
-
-
-// STATE
-let todos = [{value: "Reading book", id: "a11", isDone: false, edit: false}, 
-            {value: "Play football", id: "a22", isDone: true, edit: true}];
-
-let status = "all";
-
-const filterTodosByStatus = (status, todos) => {
-  switch (status) {
-    case "complete": 
-      return todos.filter((v) => v.isDone);
-    case "proccess": 
-      return todos.filter((v) => !v.isDone);
-    default : 
-      return todos;
-  }
-};
-
-// RENDERING
-const render = () => {
-  list.innerHTML = "";
-  filterTodosByStatus(status, todos).forEach((element) => {
-    const checkbox = element.isDone;
-    const edit = element.edit;
-
-    list.innerHTML += `
-      <li class="todo" id="${element.id}">
-        <input onclick="onCheck('${element.id}');" ${checkbox == true ? "checked" : ""} type="checkbox" />
-        <input value="${element.value}" ${edit == false ? "disabled" : ""} class="todo_input" type="text" />
-        <div class="save">
-          <i class="bx bx-sm bxs-save"></i>
-        </div>
-        <div class="cencel">
-          <i onclick="onCencel('${element.id}');" class="bx bx-sm bx-x"></i>
-        </div>
-        <div class="edit">
-          <i onclick="onEdit('${element.id}')" class="bx bx-sm bxs-pencil"></i>
-        </div>
-        <div class="delete">
-          <i onclick="deleteTodo('${element.id}');" class="bx bx-sm bx-trash"></i>
-        </div>
-      </li>`;
-  })
-
-}; 
-
-render();
-
-// onCheck button 
-function onCheck(id) {
-  todos = todos.map((v) => (v.id == id ? {...v, isDone: !v.isDone} : v));
-  render();
-};
-
-// click edit button
-const onEdit = (id) => {
-
-  const getButton = (id, className) => 
-    document.querySelector(#${id} .${className});
-
-  const saveButton = getButton(id, "save");
-  const cencelButton = getButton(id, "cencel");
-  const editButton = getButton(id, "edit");
-
-  saveButton.style.display = "block";
-  cencelButton.style.display = "block";
-  editButton.style.display = "none";
-};
-
-// click cencel button
-const onCencel = (id) => {
-  
-  const getButton = (id, className) => 
-    document.querySelector(#${id} .${className});
-
-  const saveButton = getButton(id, "save");
-  const cencelButton = getButton(id, "cencel");
-  const editButton = getButton(id, "edit");
-
-  saveButton.style.display = "none";
-  cencelButton.style.display = "none";
-  editButton.style.display = "block";
-};
-
-// Edit button   
-// let a = 0;
-// function editing(id) {
-//   if (a == 0) {
-//     todos = todos.map((v) => (v.id == id ? {...v, edit: !v.edit} : v));
-//     render();
-//     ++a;
-//   } else {
-//     todos = todos.map((v) => (v.id == id ? {...v, edit: !v.edit} : v));
-//     render();
-//     --a;
-//   }
-// };
-
-// Action Trash, delete to do list
-function deleteTodo(id) {
-  todos = todos.filter(v => v.id != id);
-  render();
-};
-
-// Event  Clear all
-clear.addEventListener("click", () => {
-  todos = [];
-  render();
-});
-
-
-// if input null
-function inputHasNull() {
-  input.style.transform = rotate(4deg);
-  setTimeout(inputHasNull1, 30); 
-};
-
-function inputHasNull1() {
-  input.style.transform = rotate(-3deg);
-  setTimeout(inputHasNull2, 50); 
-};
-
-function inputHasNull2() {
-  input.style.transform = rotate(2deg);
-  setTimeout(inputHasNull3, 50); 
+for(let listElem of listElems){
+   listElem.addEventListener(
+			"dragstart",
+			(event)=>{ console.log("start")}
+		);
+		listElem.addEventListener(
+			"dragover",
+			((event) => {
+				event.preventDefault();
+			})
+		);
+		listElem.addEventListener("drop", (event)=>{console.log("drop")});
 }
-
-function inputHasNull3() {
-  input.style.transform = rotate(-1deg);
-  setTimeout(inputHasNull4, 50); 
-}
-
-function inputHasNull4() {
-  input.style.transform = rotate(0deg);
-}
-
-
-// click submit then create lists
-form.addEventListener("submit", (event) => {
-  event.preventDefault();
-  if (event.target["todo"].value == "") {
-    inputHasNull();
-  } else {
-    const inputValue = event.target["todo"].value;
-    const newTodo = {value: inputValue, id: "a" + Date.now(), isDone: false, edit: false};
-    todos.unshift(newTodo);
-    event.target["todo"].value = null;
-    render();
-  }
-});
-*/

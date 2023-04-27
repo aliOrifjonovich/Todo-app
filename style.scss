@@ -206,9 +206,9 @@
     flex-direction: row;
     gap: 1rem;
     margin: 1rem 0;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
     background: #f6f6f6;
     // border: red 2px solid;
+    transition: all .2s ease-in-out;
     padding: 1rem .8rem;
     border-radius: 5px;
     width: 100%;
@@ -224,6 +224,11 @@
         border: none;
         
     }
+}
+
+.filter:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+    transition: all .2s ease-in-out;
 }
 
 .dragging {

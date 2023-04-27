@@ -219,8 +219,8 @@
   flex-direction: row;
   gap: 1rem;
   margin: 1rem 0;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
   background: #f6f6f6;
+  transition: all 0.2s ease-in-out;
   padding: 1rem 0.8rem;
   border-radius: 5px;
   width: 100%;
@@ -232,6 +232,11 @@
 .filter_selection {
   width: 60%;
   border: none;
+}
+
+.filter:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+  transition: all 0.2s ease-in-out;
 }
 
 .dragging {
