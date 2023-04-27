@@ -136,7 +136,7 @@ const onCancel = (id) => {
 	const todoItem = document.querySelector(`#${id}`);
 	const todoInput = todoItem.querySelector(".todo_input");
 	todoInput.setAttribute("disabled", "");
-
+  render()
 };
 
 // Save Function
