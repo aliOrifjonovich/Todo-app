@@ -63,17 +63,17 @@
     transform: translateY(2px);
     transition: all 0.2s ease-in-out;
 }
-.each_wrapper{
+.todosList{
     margin-bottom: 11px;
 }
-
-.li {
+.todo {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    justify-content: center;
     gap: 10px;
-    padding: 0 24px;
-    width: 392px;
-    height: 48px;
+    padding: 10px 24px;
+    // width: 392px;
+    // height: 48px;
     background: #fff;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
     border-radius: 8px;
@@ -83,9 +83,25 @@
         margin-bottom: 11px;
     }
 }
+.todo_date{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 17px;
+    padding: .3rem 0 ;
+    font-weight: 600;
+    color: #9b9a9a;
+    // width: 100%;
+    // border-bottom: #9b9a9a 2px solid ;
+}
+.todo_header{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
 .todo_input {
     flex-grow: 1;
-    font-size: 1.3rem;
+    font-size: 1.5rem;
     text-transform: capitalize;
     color: #000;
     font-size: 1.5rem;
@@ -238,11 +254,4 @@
 
 .drag-over {
   border: 2px dashed #1abc9c;
-}
-
-
-@media(min-width: 510px) {
-  .title{
-    font-size: 2px;
-  }
 }
