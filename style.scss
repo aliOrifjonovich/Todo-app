@@ -63,10 +63,11 @@
     transform: translateY(2px);
     transition: all 0.2s ease-in-out;
 }
-.todosList{
+.each_wrapper{
     margin-bottom: 11px;
 }
-.todo {
+
+.li {
     display: flex;
     align-items: center;
     gap: 10px;
@@ -237,4 +238,11 @@
 
 .drag-over {
   border: 2px dashed #1abc9c;
+}
+
+
+@media(min-width: 510px) {
+  .title{
+    font-size: 2px;
+  }
 }
