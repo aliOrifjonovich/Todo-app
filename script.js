@@ -8,12 +8,11 @@ let todos = JSON.parse(localStorage.getItem("todos")) || [];
 
 let status = "all";
 
-const getButton = (id, className) =>
-	document.querySelector(`#${id} .${className}`);
-
-let saveButton, editButton, editBtn;
-
-let showButtons = (show) => {};
+// Taking buttons
+const setButtonDisplay = (id, className, value) => {
+	const button = document.querySelector(`#${id} .${className}`);
+	button.style.display = value;
+};
 
 // Selection Filter
 const selectionFilter = (todos, status) => {
@@ -38,10 +37,7 @@ const render = () => {
         <li class="todo" draggable= true id = "${e.id}">
 			<div class="todo_date">
 				<span class="date">${new Date().toLocaleDateString()}</span>
-				<span class="time">${new Date().toLocaleTimeString([], {
-					hour: "2-digit",
-					minute: "2-digit",
-				})}</span></div>
+			</div>
 			<div class="todo_header">
 				<input type="checkbox" class="checkbox" ${checkbox == true ? "checked" : ""}/>
 				<input value="${e.value}" class="todo_input" type="text" ${
@@ -59,24 +55,54 @@ const render = () => {
 				<div class="delete"> 
 					<i class="fa-solid fa-trash bx-sm"></i>
 				</div>
-			</div>
-        </li>
-        `;
+				</div>
+				</li>
+				`;
 	});
+	let startIndex;
+	let dropIndex;
+	const dragElement = document.getElementsByClassName("todo");
+	for (let el of dragElement) {
+		el.addEventListener("dragstart", (e) => {
+			let startId = el.id;
+			startIndex = todos.findIndex((v) => startId == v.id);
+		});
+
+		el.addEventListener("dragover", (e) => {
+			e.preventDefault();
+		});
+
+		el.addEventListener("dragleave", (e) => {
+			e.preventDefault();
+		});
+
+		el.addEventListener("drop", (e) => {
+			e.preventDefault();
+			let dropId = el.id;
+			dropIndex = todos.findIndex((v) => dropId == v.id);
+		});
+
+		el.addEventListener("dragend", (e) => {
+			e.preventDefault();
+
+			let a = todos.splice(startIndex, 1);
+
+			todos.splice(dropIndex, 0, a[0]);
+
+			render();
+		});
+	}
 };
+
 render();
 
 ////////////////////Click All buttons function////////////////
-const parentBlock = document.querySelector(".block");
+const parentBlock = document.querySelector("#block");
 
 parentBlock.addEventListener("click", (e, index) => {
 	const id = e.target.closest(".todo").getAttribute("id");
+	const checkbox = e.target.closest(".checkbox");
 
-	if (e.target.closest(".clear")) {
-		console.log("clear");
-		todos = [];
-		render;
-	}
 	if (e.target.closest(".delete")) {
 		console.log("delete");
 		todos.splice(index, 1);
@@ -95,28 +121,27 @@ parentBlock.addEventListener("click", (e, index) => {
 		Save(id);
 	}
 	if (e.target.closest(".checkbox")) {
-		console.log("chackbox", id);
+		console.log("checkbox", id);
 		todos = todos.map((v) => (v.id == id ? { ...v, isDone: !v.isDone } : v));
 		render();
+		
+		console.log(checkbox);
+		
+		if (checkbox && checkbox.checked) {
+			const editBtn = document.querySelector(`#${id} .edit`);
+			editBtn.style.display = "none";
+		} else {
+			const editBtn = document.querySelector(`#${id} .edit`);
+			editBtn.style.display = "block";
+		}
+		
+		if (e.target.closest(".clear")) {
+			console.log("clear");
+			todos = [];
+			render();
+		}
 	}
 });
-
-////////////////// Checking input ////////////////////////////
-// function Check(id) {
-
-// 	// 	const inputEl = document.querySelector(`#${id} .todo_input`);
-//     // // const getButton = (id, className) =>
-// 	// 	// 	document.querySelector(`#${id} .${className}`);
-//     // // const editButton = getButton(id, "edit");
-
-// 	// 	if (todos.find((v) => v.id == id).isDone) {
-// 	// 		inputEl.classList.add("done");
-//     //   // editButton.style.display = "none";
-// 	// 	} else {
-// 	// 		inputEl.classList.remove("done");
-//     //   // editButton.style.display = "block"
-// 	// 	}
-// };
 
 ////////////////////// Submit Button //////////////////////////
 form.addEventListener("submit", (event) => {
@@ -141,43 +166,27 @@ form.addEventListener("submit", (event) => {
 
 // Edit funtion
 const Edit = (id) => {
-	const getButton = (id, className) =>
-		document.querySelector(`#${id} .${className}`);
+	setButtonDisplay(id, "save", "block");
+	setButtonDisplay(id, "cancel", "block");
+	setButtonDisplay(id, "edit", "none");
 
-	const saveButton = getButton(id, "save");
-	const cancelButton = getButton(id, "cancel");
-	const editButton = getButton(id, "edit");
+	const todoItem = document.querySelector(`#${id} .todo_input`);
+	todoItem.removeAttribute("disabled");
 
-	saveButton.style.display = "block";
-	cancelButton.style.display = "block";
-	editButton.style.display = "none";
-
-	const todoItem = document.querySelector(`#${id}`);
-	const todoInput = todoItem.querySelector(".todo_input");
-	todoInput.removeAttribute("disabled");
-
-	todoInput.focus();
-	const inputElem = todoInput.value;
-	todoInput.value = "";
-	todoInput.value = inputElem;
+	todoItem.focus();
+	const inputElem = todoItem.value;
+	todoItem.value = "";
+	todoItem.value = inputElem;
 };
 
 /////////////////////Cancel Function///////////////////////////
 const Cancel = (id) => {
-	const getButton = (id, className) =>
-		document.querySelector(`#${id} .${className}`);
+	setButtonDisplay(id, "save", "none");
+	setButtonDisplay(id, "cancel", "none");
+	setButtonDisplay(id, "edit", "block");
 
-	const saveButton = getButton(id, "save");
-	const cancelButton = getButton(id, "cancel");
-	const editButton = getButton(id, "edit");
-
-	saveButton.style.display = "none";
-	cancelButton.style.display = "none";
-	editButton.style.display = "block";
-
-	const todoItem = document.querySelector(`#${id}`);
-	const todoInput = todoItem.querySelector(".todo_input");
-	todoInput.setAttribute("disabled", "");
+	const todoItem = document.querySelector(`#${id} .todo_input`);
+	todoItem.setAttribute("disabled", "");
 	render();
 };
 
@@ -198,50 +207,3 @@ select.addEventListener("change", (event) => {
 	render();
 	console.log(event.target.value);
 });
-
-// // ClearAll Function
-// clearBtn.addEventListener("click", () => {
-//
-// });
-
-// // Delete by id
-// const deleteById = (index) => {
-// 	todos.splice(index, 1);
-// 	render();
-// };
-
-const updateDateTime = () => {
-	const now = new Date();
-	const dateElem = document.getElementById("date");
-	const timeElem = document.getElementById("time");
-	dateElem.textContent = now.toLocaleDateString();
-	timeElem.textContent = now.toLocaleTimeString();
-};
-setInterval(updateDateTime, 1000);
-
-const listElems = document.getElementsByClassName("todo");
-
-for (let listElem of listElems) {
-	listElem.addEventListener("dragstart", (event) => {
-		event.dataTransfer.setData("text/plain", event.target.id);
-		console.log("start");
-	});
-	listElem.addEventListener("dragover", (event) => {
-		event.preventDefault();
-	});
-	listElem.addEventListener("drop", (event) => {
-		event.preventDefault();
-		const id = event.dataTransfer.getData("text/plain");
-		const element = document.getElementById(id);
-		const target = event.target.closest(".todo");
-		const list = target.parentNode;
-		const targetIndex = Array.from(list.children).indexOf(target);
-		const elementIndex = Array.from(list.children).indexOf(element);
-		if (targetIndex < elementIndex) {
-			list.insertBefore(element, target.nextSibling);
-		} else {
-			list.insertBefore(element, target);
-		}
-		console.log("drop");
-	});
-}

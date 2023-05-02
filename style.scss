@@ -21,10 +21,11 @@
     -webkit-background-clip: text; 
     -webkit-text-fill-color: transparent;
 }
-.block {
+#block {
     background: #fbfbfb;
     border-radius: 12px;
     padding: 32px;
+    height: auto;
 }
 .form {
     display: flex;
@@ -111,15 +112,18 @@
     background-color: #fff;
     
 }
+
+.checkbox:checked ~ .todo_input {
+  text-decoration: line-through;
+  text-decoration-thickness: 3px;
+  text-decoration-color: #ae2f3c;
+}
+
 .active {
     border: 2px solid red;
     transition: .05s all ease;
 }
-.done {
-    text-decoration: line-through;
-    text-decoration-thickness: 3px;
-    text-decoration-color: #ae2f3c;
-}
+
 .clear {
     cursor: pointer;
     font-size: 20px;
