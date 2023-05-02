@@ -7,6 +7,8 @@ const select = document.querySelector(".filter_selection");
 let todos = JSON.parse(localStorage.getItem("todos")) || [];
 
 let status = "all";
+let dateHistory = [];
+
 
 // Taking buttons
 const setButtonDisplay = (id, className, value) => {
@@ -30,13 +32,15 @@ const selectionFilter = (todos, status) => {
 const render = () => {
 	localStorage.setItem("todos", JSON.stringify(todos));
 	list.innerHTML = "";
+	
 	selectionFilter(todos, status).forEach((e, index) => {
 		const checkbox = e.isDone;
 		const edit = e.edit;
+
 		list.innerHTML += `
         <li class="todo" draggable= true id = "${e.id}">
 			<div class="todo_date">
-				<span class="date">${new Date().toLocaleDateString()}</span>
+				<span class="date">215615</span>
 			</div>
 			<div class="todo_header">
 				<input type="checkbox" class="checkbox" ${checkbox == true ? "checked" : ""}/>
@@ -49,7 +53,7 @@ const render = () => {
 				<div class="cancel">
 					<i class="fa-solid fa-xmark"></i>
 				</div>
-				<div class="edit">
+				<div class="edit ${e.isDone==true ? "d" : ""}">
 					<i class="fa-solid fa-pen bx-sm"></i>
 				</div>
 				<div class="delete"> 
@@ -59,6 +63,9 @@ const render = () => {
 				</li>
 				`;
 	});
+	
+
+	// Drag and Drop
 	let startIndex;
 	let dropIndex;
 	const dragElement = document.getElementsByClassName("todo");
@@ -99,14 +106,13 @@ render();
 ////////////////////Click All buttons function////////////////
 const parentBlock = document.querySelector("#block");
 
-parentBlock.addEventListener("click", (e, index) => {
-	const id = e.target.closest(".todo").getAttribute("id");
+parentBlock.addEventListener("click", (e) => {
+	const id = e.target.closest(".todo")?.id
 	const checkbox = e.target.closest(".checkbox");
-
 	if (e.target.closest(".delete")) {
-		console.log("delete");
-		todos.splice(index, 1);
-		render();
+		console.log("delete", e.target.closest(".delete"));
+		 todos = todos.filter((todo) => todo.id !== id);
+		 render()
 	}
 	if (e.target.closest(".edit")) {
 		console.log("edit", id);
@@ -126,20 +132,11 @@ parentBlock.addEventListener("click", (e, index) => {
 		render();
 		
 		console.log(checkbox);
-		
-		if (checkbox && checkbox.checked) {
-			const editBtn = document.querySelector(`#${id} .edit`);
-			editBtn.style.display = "none";
-		} else {
-			const editBtn = document.querySelector(`#${id} .edit`);
-			editBtn.style.display = "block";
-		}
-		
-		if (e.target.closest(".clear")) {
-			console.log("clear");
-			todos = [];
-			render();
-		}
+	}
+	if (e.target.closest(".clear")) {
+		console.log("clear");
+		todos = [];
+		render();
 	}
 });
 
