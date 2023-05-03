@@ -2,13 +2,23 @@ const form = document.querySelector(".form");
 const list = document.querySelector(".todosList");
 const input = document.querySelector(".input");
 const select = document.querySelector(".filter_selection");
+const modal = document.querySelector(".validation");
+const yesButton = document.querySelector(".yes");
+const noButton = document.querySelector(".no");
 
 // LocalStorage
 let todos = JSON.parse(localStorage.getItem("todos")) || [];
+// let todos = [
+// 	{
+// 		value: "Reading Books",
+// 		id: "a2134324234234",
+// 		isDone: true,
+// 		edit: false,
+// 		date: new Date(),
+// 	},
+// ];
 
 let status = "all";
-let dateHistory = [];
-
 
 // Taking buttons
 const setButtonDisplay = (id, className, value) => {
@@ -30,17 +40,21 @@ const selectionFilter = (todos, status) => {
 
 //////////////////////// Rendering /////////////////////////////
 const render = () => {
-	localStorage.setItem("todos", JSON.stringify(todos));
+	// localStorage.setItem("todos", JSON.stringify(todos));
 	list.innerHTML = "";
-	
-	selectionFilter(todos, status).forEach((e, index) => {
+
+	selectionFilter(todos, status).forEach((e) => {
 		const checkbox = e.isDone;
 		const edit = e.edit;
-
+		console.log(e?.date?.toLocaleDateString());
 		list.innerHTML += `
         <li class="todo" draggable= true id = "${e.id}">
 			<div class="todo_date">
-				<span class="date">215615</span>
+				<span class="date">${e.date.toLocaleDateString()}</span>
+				<span class ="time">${e.date.toLocaleTimeString([], {
+					hour: "2-digit",
+					minute: "2-digit",
+				})}</span>
 			</div>
 			<div class="todo_header">
 				<input type="checkbox" class="checkbox" ${checkbox == true ? "checked" : ""}/>
@@ -53,7 +67,7 @@ const render = () => {
 				<div class="cancel">
 					<i class="fa-solid fa-xmark"></i>
 				</div>
-				<div class="edit ${e.isDone==true ? "d" : ""}">
+				<div class="edit ${e.isDone == true ? "d" : ""}">
 					<i class="fa-solid fa-pen bx-sm"></i>
 				</div>
 				<div class="delete"> 
@@ -63,7 +77,6 @@ const render = () => {
 				</li>
 				`;
 	});
-	
 
 	// Drag and Drop
 	let startIndex;
@@ -107,12 +120,16 @@ render();
 const parentBlock = document.querySelector("#block");
 
 parentBlock.addEventListener("click", (e) => {
-	const id = e.target.closest(".todo")?.id
+	const id = e.target.closest(".todo")?.id;
 	const checkbox = e.target.closest(".checkbox");
 	if (e.target.closest(".delete")) {
-		console.log("delete", e.target.closest(".delete"));
-		 todos = todos.filter((todo) => todo.id !== id);
-		 render()
+		modal.style.display = "block";
+		yesButton.addEventListener("click", () => {
+			todos = todos.filter((todo) => todo.id !== id);
+			render();
+			modal.style.display = "none";
+		});
+		noButton.addEventListener("click", ()=> modal.style.display = "none")
 	}
 	if (e.target.closest(".edit")) {
 		console.log("edit", id);
@@ -130,7 +147,7 @@ parentBlock.addEventListener("click", (e) => {
 		console.log("checkbox", id);
 		todos = todos.map((v) => (v.id == id ? { ...v, isDone: !v.isDone } : v));
 		render();
-		
+
 		console.log(checkbox);
 	}
 	if (e.target.closest(".clear")) {
@@ -149,6 +166,7 @@ form.addEventListener("submit", (event) => {
 		id: "a" + Date.now(),
 		isDone: false,
 		edit: false,
+		date: new Date(),
 	};
 	if (inputValue == "") {
 		input.classList.add("active");
