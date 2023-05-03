@@ -46,7 +46,6 @@ const render = () => {
 	selectionFilter(todos, status).forEach((e) => {
 		const checkbox = e.isDone;
 		const edit = e.edit;
-		console.log(e?.date?.toLocaleDateString());
 		list.innerHTML += `
         <li class="todo" draggable= true id = "${e.id}">
 			<div class="todo_date">
