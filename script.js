@@ -5,6 +5,7 @@ const select = document.querySelector(".filter_selection");
 const modal = document.querySelector(".validation");
 const yesButton = document.querySelector(".yes");
 const noButton = document.querySelector(".no");
+const nothingImge = document.querySelector(".nothing-image");
 
 // LocalStorage
 let todos = JSON.parse(localStorage.getItem("todos")) || [];
@@ -40,17 +41,17 @@ const selectionFilter = (todos, status) => {
 
 //////////////////////// Rendering /////////////////////////////
 const render = () => {
-	// localStorage.setItem("todos", JSON.stringify(todos));
+	localStorage.setItem("todos", JSON.stringify(todos));
 	list.innerHTML = "";
-
+	
 	selectionFilter(todos, status).forEach((e) => {
 		const checkbox = e.isDone;
 		const edit = e.edit;
 		list.innerHTML += `
         <li class="todo" draggable= true id = "${e.id}">
 			<div class="todo_date">
-				<span class="date">${e.date.toLocaleDateString()}</span>
-				<span class ="time">${e.date.toLocaleTimeString([], {
+				<span class="date">${e.timeDate.toLocalDateString()}</span>
+				<span class ="time">${e.timeDate.toLocalTimeString([], {
 					hour: "2-digit",
 					minute: "2-digit",
 				})}</span>
@@ -76,6 +77,9 @@ const render = () => {
 				</li>
 				`;
 	});
+	todos == ""
+		? (nothingImge.style.display = "flex")
+		: (nothingImge.style.display = "none");
 
 	// Drag and Drop
 	let startIndex;
@@ -128,7 +132,7 @@ parentBlock.addEventListener("click", (e) => {
 			render();
 			modal.style.display = "none";
 		});
-		noButton.addEventListener("click", ()=> modal.style.display = "none")
+		noButton.addEventListener("click", () => (modal.style.display = "none"));
 	}
 	if (e.target.closest(".edit")) {
 		console.log("edit", id);
@@ -165,7 +169,7 @@ form.addEventListener("submit", (event) => {
 		id: "a" + Date.now(),
 		isDone: false,
 		edit: false,
-		date: new Date(),
+		timeDate: new Date(),
 	};
 	if (inputValue == "") {
 		input.classList.add("active");

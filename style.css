@@ -271,9 +271,48 @@
   border: 2px dashed #1abc9c;
 }
 
+.nothing-image {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  margin: 1rem auto;
+  width: 300px;
+}
+
 @media (max-width: 390px) {
   #block {
     width: 320px;
+    padding: 25px 15px;
+  }
+  .title {
+    font-size: 40px;
+  }
+  .form .input {
+    width: 230px;
+  }
+  .form .add {
+    width: 60px;
+    height: 45px;
+    font-size: 1.3rem;
+  }
+  .form .filter_title {
+    font-size: 1.3rem;
+    border: 2px solid red;
+  }
+  .form select option {
+    font-size: 2rem;
+  }
+  .todo .todo_header {
+    gap: 11px;
+  }
+  .todo .todo_input {
+    width: 150px;
+    font-size: 1.6rem;
+  }
+}
+@media (max-width: 300px) {
+  #block {
+    width: 150px;
     padding: 25px 15px;
   }
   .title {
