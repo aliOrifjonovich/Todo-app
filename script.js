@@ -9,16 +9,6 @@ const nothingImge = document.querySelector(".nothing-image");
 
 // LocalStorage
 let todos = JSON.parse(localStorage.getItem("todos")) || [];
-// let todos = [
-// 	{
-// 		value: "Reading Books",
-// 		id: "a2134324234234",
-// 		isDone: true,
-// 		edit: false,
-// 		date: new Date(),
-// 	},
-// ];
-
 let status = "all";
 
 // Taking buttons
@@ -43,18 +33,16 @@ const selectionFilter = (todos, status) => {
 const render = () => {
 	localStorage.setItem("todos", JSON.stringify(todos));
 	list.innerHTML = "";
-	
+
 	selectionFilter(todos, status).forEach((e) => {
 		const checkbox = e.isDone;
 		const edit = e.edit;
+		console.log(e);
 		list.innerHTML += `
         <li class="todo" draggable= true id = "${e.id}">
 			<div class="todo_date">
-				<span class="date">${e.timeDate.toLocalDateString()}</span>
-				<span class ="time">${e.timeDate.toLocalTimeString([], {
-					hour: "2-digit",
-					minute: "2-digit",
-				})}</span>
+				<span class="date">${e.date}</span>
+				<span class ="time">${e.time}<span>
 			</div>
 			<div class="todo_header">
 				<input type="checkbox" class="checkbox" ${checkbox == true ? "checked" : ""}/>
@@ -169,7 +157,11 @@ form.addEventListener("submit", (event) => {
 		id: "a" + Date.now(),
 		isDone: false,
 		edit: false,
-		timeDate: new Date(),
+		date: new Date().toLocaleDateString(),
+		time: new Date().toLocaleTimeString([], {
+			hour: "2-digit",
+			minute: "2-digit",
+		}),
 	};
 	if (inputValue == "") {
 		input.classList.add("active");
