@@ -71,6 +71,31 @@
 
 .todosList {
   margin-bottom: 11px;
+  overflow: hidden;
+  overflow-y: scroll;
+  height: 300px;
+  padding: 1rem;
+  width: 100%;
+}
+
+/* width */
+.todosList::-webkit-scrollbar {
+  width: 3px;
+}
+
+/* Track */
+.todosList::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+.todosList::-webkit-scrollbar-thumb {
+  background: #1a6bc7;
+}
+
+/* Handle on hover */
+.todosList::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 
 .todo {
@@ -313,16 +338,16 @@
     width: 200px;
   }
 }
-@media (max-width: 300px) {
+@media (max-width: 340px) {
   #block {
-    width: 150px;
+    width: 300px;
     padding: 25px 15px;
   }
   .title {
     font-size: 40px;
   }
   .form .input {
-    width: 230px;
+    width: 210px;
   }
   .form .add {
     width: 60px;
