@@ -37,7 +37,6 @@ const render = () => {
 	selectionFilter(todos, status).forEach((e) => {
 		const checkbox = e.isDone;
 		const edit = e.edit;
-		console.log(e);
 		list.innerHTML += `
         <li class="todo" draggable= true id = "${e.id}">
 			<div class="todo_date">
@@ -46,9 +45,7 @@ const render = () => {
 			</div>
 			<div class="todo_header">
 				<input type="checkbox" class="checkbox" ${checkbox == true ? "checked" : ""}/>
-				<input value="${e.value}" class="todo_input" type="text" ${
-			edit == false ? "disabled" : ""
-		} />
+				<input value="${e.value}" class="todo_input" type="text" disabled />
 				<div class="save">
 					<i class="fa-solid fa-floppy-disk"></i>
 				</div>	
@@ -112,7 +109,7 @@ const parentBlock = document.querySelector("#block");
 
 parentBlock.addEventListener("click", (e) => {
 	const id = e.target.closest(".todo")?.id;
-	const checkbox = e.target.closest(".checkbox");
+	// const checkbox = e.target.closest(".checkbox");
 	if (e.target.closest(".delete")) {
 		modal.style.display = "block";
 		yesButton.addEventListener("click", () => {
@@ -139,7 +136,7 @@ parentBlock.addEventListener("click", (e) => {
 		todos = todos.map((v) => (v.id == id ? { ...v, isDone: !v.isDone } : v));
 		render();
 
-		console.log(checkbox);
+		// console.log(checkbox);
 	}
 	if (e.target.closest(".clear")) {
 		console.log("clear");
@@ -156,7 +153,7 @@ form.addEventListener("submit", (event) => {
 		value: inputValue,
 		id: "a" + Date.now(),
 		isDone: false,
-		edit: false,
+		// edit: false,
 		date: new Date().toLocaleDateString(),
 		time: new Date().toLocaleTimeString([], {
 			hour: "2-digit",
@@ -182,6 +179,7 @@ const Edit = (id) => {
 
 	const todoItem = document.querySelector(`#${id} .todo_input`);
 	todoItem.removeAttribute("disabled");
+	// todoItem.edit = true;
 
 	todoItem.focus();
 	const inputElem = todoItem.value;
@@ -206,7 +204,6 @@ const Save = (id) => {
 	const index = todos.findIndex((todo) => todo.id === id);
 	if (index !== true) {
 		todos[index].value = inputEl.value;
-		todos[index].edit = false;
 		render();
 	}
 };
@@ -215,5 +212,5 @@ const Save = (id) => {
 select.addEventListener("change", (event) => {
 	status = event.target.value;
 	render();
-	console.log(event.target.value);
+	// console.log(event.target.value);
 });
